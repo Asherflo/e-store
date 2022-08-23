@@ -1,11 +1,15 @@
 package africa.semicolon.estore.data.model;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
+
 @Entity
-public class Seller extends User {
+public class Item {
     @Id
-    @GeneratedValue
     private Long id;
+    @OneToOne
+    private Product product;
+
+
 }
