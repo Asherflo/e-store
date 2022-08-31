@@ -8,9 +8,8 @@ import africa.semicolon.estore.dto.request.ProductRequest;
 import africa.semicolon.estore.dto.response.productResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-
-import java.time.format.DateTimeFormatter;
 
 @Service
 @AllArgsConstructor
@@ -22,10 +21,8 @@ public class ProductServiceImpl implements ProductService{
     public productResponse addProduct(ProductRequest productRequest) {
       Product product = new Product();
         log.info("somet -> {}", product);
-      product.setProductName(productRequest.getProductName());
-      product.setProducePrice(productRequest.getProducePrice());
-      product.setRating(productRequest.getRating());
-      product.setCategory(productRequest.getCategory());
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.map(productRequest,Product.class);
       Product savedProduct = productRepository.save(product);
         log.info("something -> {}", savedProduct);
         productResponse response = new productResponse();
@@ -51,11 +48,11 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public productResponse updateProduct(ProductRequest productRequest) {
         Product product = productRepository.findByProductName(productRequest.getProductName());
-
-        product.setCategory(productRequest.getCategory());
-        product.setProductName(productRequest.getProductName());
-        product.setRating(productRequest.getRating());
-        product.setCategory(productRequest.getCategory());
+        if(product == null){
+            throw  new IllegalStateException("PRODUCT NOT AVAILABLE");
+        }
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.map(productRequest,Product.class);
         productRepository.save(product);
         productResponse response = new productResponse();
         response.setMessage("product successfully updated");
