@@ -22,6 +22,9 @@ public class Buyer extends User{
     @Id
     @GeneratedValue
     private Long id;
+    @NotNull
+    
+    private String Email;
 
 
 }
